@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="sqlite3ext.h" />
+    <ClInclude Include="Sudoku.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="sudoku_omar.sqlite3" />
