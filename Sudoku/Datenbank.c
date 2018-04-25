@@ -1,54 +1,119 @@
 #include "Sudoku.h"
 
-struct Bestenlisteneintrag* liesBestenlisteneintraege(int iSchwierigkeitsgrad);
-void fillBestenlisteneintraege(void* data, int argColumn, char** argVertical, char** columnName);
+Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad);
 Nutzer liesLogindaten(char* sNutzername);
+char** liesSudoku(int id); //TODO
+void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement);
 
-
-struct Bestenlisteneintrag* liesBestenlisteneintraege(int iSchwierigkeitsgrad) {
+Koordinate** liesSudoku(int id) {
 	char* sql;
 	sqlite3* db_handle;
-	int rc;
-	UebergabeLeseBestenliste uebergabe;
-	uebergabe.curVal = 0;
+	sqlite3_stmt* statement;
+	char* zErrMessage;
+	int i;
+	int iSpalte;
+	int iReihe;
+	int iReturncode;
+	Koordinate koordinaten[SUDOKU_SPALTE][SUDOKU_REIHE];
+	Koordinate koordinate;
 
+
+	// SQL
 	sql = sqlite3_mprintf(
-		"SELECT A.FK_Nutzer, A.Spielzeit, B.Programmwert FROM Bestenliste AS A "
-		"LEFT JOIN Schwierigkeit AS B "
-		"ON A.FK_Schwierigkeit = B.ID "
-		"ORDER BY B.Programmwert, A.Spielzeit "
-		"WHERE B.Programmwert = %i;", iSchwierigkeitsgrad);
+		"SELECT B.KoordinateX, B.KoordinateY, B.Sichtbar FROM Sudoku AS A "
+		"LEFTJOIN Kooridnaten AS B "
+		"ON A.ID = Koordinaten.FK_Sudoku "
+		"WHERE A.ID = %i "
+		"ORDER BY B.KoordinateX, B.KoordinateY;", id);
 
-	rc = sqlite3_open(DATABASE_FILE, &db_handle);
-	if (rc != SQLITE_OK) {
+	// Db öffnen
+	iReturncode = sqlite3_open(DATABASE_FILE, &db_handle);
+
+	// Bei fehlern sofort schliessen
+	if (iReturncode != SQLITE_OK) {
 		sqlite3_close(db_handle);
-		exit(-1);
+		exit(-1); // TODO check
 	}
 
-	rc = sqlite3_exec(db_handle, sql, *fillBestenlisteneintraege, &uebergabe, NULL);
-	// TODO errormessage
-	return uebergabe.eintraege;
+	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, zErrMessage);
+
+	// Koordinatenarray füllen
+	int iReihe = 0;
+	int iSpalte = 0;
+
+	while (sqlite3_step(statement) == SQLITE_ROW) {
+		fuelleKoordinate(koordinaten[iReihe, iSpalte], statement);
+		if (iReihe < SUDOKU_REIHE) {
+			iReihe++;
+		}
+		else if (iSpalte < SUDOKU_SPALTE) {
+			iSpalte++;
+			iReihe = 0;
+		} else {
+			strcat(zErrMessage, "Fehler ");
+		}
+	}
+
+	return koordinaten;
+
 }
 
-void fillBestenlisteneintraege(void* data, int maxCol, char** value, char** columnName) {
-	char sNutzername[NAME_MAX];
-	char sSpielzeit[ZEIT_MAX];
-	struct UebergabeLeseBestenliste* uebergabe = (struct UebergabeLeseBestenliste*)data;
-	struct Bestenlisteneintrag eintrag;
-	int iSchwierigkeit;
-	if (maxCol == 3) {
-		return;
+void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement) {
+	int i = 0;
+	// x-Koordinate
+	koordinate->iX = sqlite3_column_int(statement, i++);
+
+	// y-Koordinate
+	koordinate->iY = sqlite3_column_int(statement, i++);
+
+	// Sichtbar
+	koordinate->bSichtbar = sqlite3_column_int(statement, i++);
+}
+
+Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad) {
+	char* sql;
+	sqlite3* db_handle;
+	sqlite3_stmt* statement;
+	char *zErrMessage;
+	int iSpalte;
+	int iReturncode;
+	Bestenlisteneintrag eintraege[BESTENLISTE_TOPSCORE_ANZAHL];
+	Bestenlisteneintrag eintrag;
+
+	// SQL
+	sql = sqlite3_mprintf(
+		"SELECT C.Nutzername, A.Spielzeit, B.Programmwert FROM Bestenliste AS A "
+		"LEFT JOIN Schwierigkeit AS B "
+		"ON A.FK_Schwierigkeit = B.ID "
+		"LEFTJOIN Nutzer AS C "
+		"ON A.FK_Nutzer = C.ID"
+		"ORDER BY B.Programmwert, A.Spielzeit "
+		"WHERE B.Programmwert = %i ", iSchwierigkeitsgrad);
+
+	// Db öffnen
+	iReturncode = sqlite3_open(DATABASE_FILE, &db_handle);
+
+	// Bei fehlern sofort schliessen
+	if (iReturncode != SQLITE_OK) {
+		sqlite3_close(db_handle);
+		exit(-1); // TODO check
 	}
 
-	strcpy(eintrag.sNutzername, (char*)value++);
-	strcpy(eintrag.sSpielzeit, (char*)value++);
-	eintrag.iSchwierigkeit = atoi((char*)value++);
-	uebergabe->eintraege[uebergabe->curVal] = eintrag;
-	if (uebergabe->curVal < BESTENLISTE_TOPSCORE_ANZAHL) {
-		uebergabe->curVal++;
+	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, zErrMessage);
+
+	while (sqlite3_step(statement) == SQLITE_ROW) {
+		iSpalte = 0;
+		// Nutzername
+		strcpy(eintrag.sNutzername, sqlite3_column_text(statement, iSpalte++));
+
+		// Spielzeit
+		strcpy(eintrag.sSpielzeit, sqlite3_column_text(statement, iSpalte++));
+
+		// Schwierigkeit
+		strcpy(eintrag.iSchwierigkeit, sqlite3_column_int(statement, iSpalte++));
+
+		eintraege[iSpalte] = eintrag;
 	}
-
-
 }
 
 Nutzer liesLogindaten(char* sNutzername) {

@@ -61,6 +61,12 @@ int main(void) {
 	return 0;
 }
 
+void Abmelden() {
+	if (sNutzernameAngemeldet != NULL) {
+		sNutzernameAngemeldet = NULL;
+	}
+}
+
 
 
 

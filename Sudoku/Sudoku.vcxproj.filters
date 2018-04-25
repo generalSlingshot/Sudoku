@@ -21,6 +21,12 @@
     <ClCompile Include="sqlite3.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Oberflaeche.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Datenbank.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sqlite3.h">
@@ -34,7 +40,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="sudoku_omar.sqlite3">
+    <None Include="sudoku.sqlite3">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
