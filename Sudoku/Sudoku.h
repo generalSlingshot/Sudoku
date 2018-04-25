@@ -22,6 +22,9 @@ Defines
 #define SUDOKU_WIN 1
 #define SUDOKU_LOSE 0
 
+#define SUDOKU_REIHE 9
+#define SUDOKU_SPALTE 9
+
 #define HAUPTMENUE_SPIEL 1
 #define HAUPTMENUE_REGEL 2
 #define HAUPTMENUE_LISTE 3
@@ -78,6 +81,13 @@ typedef struct UebergabeLeseBestenliste {
 	struct Bestenlisteneintrag eintraege[BESTENLISTE_TOPSCORE_ANZAHL];
 	int curVal;
 } UebergabeLeseBestenliste;
+
+typedef struct Koordinate {
+	int iX;
+	int iY;
+	int bSichtbar;
+	int iZiffer;
+} Koordinate;
 
 extern char* sNutzernameAngemeldet = NULL;
 
