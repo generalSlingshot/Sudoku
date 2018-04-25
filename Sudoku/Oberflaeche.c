@@ -1,4 +1,5 @@
 #include "Sudoku.h"
+#include "Oberflaeche.h"
 
 int StartMenue(void); // Chung
 void RegistrierungMenue(void); // Henning
@@ -11,7 +12,6 @@ void printRegistrierungMenue1(void);
 void printRegistrierungMenue2(void);
 void printRegistrierungMenue3(void);
 void RegelwerkPrint(void);
-void LoginMenue(void);
 void printSchwierigkeitsAuswahl(void);
 void printStartMenue(void);
 
@@ -92,7 +92,6 @@ void RegistrierungMenue(void) {
 }
 
 void LoginMenue(void) {
-
 	int bFalscheingabe = FALSE;
 	char cUsernameEingabe[NAME_MAX];
 	char cPasswortEingabe[PASSWORT_MAX];
@@ -134,12 +133,17 @@ void LoginMenue(void) {
 
 	} while (Passcorrect == 1);
 
-	sNutzernameAngemeldet = cUsernameEingabe;
+	strcpy(sNutzernameAngemeldet, cUsernameEingabe);
 	system("cls");
 
 	printf("\n\n  Sie werden eingeloggt und zum Hauptmenue weitergeleitet...\n\n");
 	printf("  ");
 	system("pause");
+}
+
+int HauptMenue(void)
+{
+	return 0;
 }
 
 
@@ -191,7 +195,7 @@ void RegelwerkPrint(void) {
 }
 
 void Hauptmenueprint(void) {
-
+	system("cls");
 	char USERNAME[] = "User";
 	// Ueberschrift
 	printf("\n\n  H A U P T M E N U E\n");
@@ -216,9 +220,9 @@ int HauptmenueAufruf(void) {
 
 	char cUserEingabe;
 	int bFalscheingabe = FALSE;
+	int iReturnValue;
 
 	do {
-		system("cls");
 		Hauptmenueprint();
 
 		// Falscheingabenpruefung
@@ -235,28 +239,35 @@ int HauptmenueAufruf(void) {
 		// Switch
 		switch (cUserEingabe) {
 
-		case '1': printf("Test 1"); //Schwierigkeitsmenue(void);
+		case '1': 
+			iReturnValue = HAUPTMENUE_LISTE;
+			bFalscheingabe = FALSE;
+			break;
+
+		case '2':
+			iReturnValue = HAUPTMENUE_REGEL;
+
 			system("pause"); bFalscheingabe = FALSE;
 			break;
 
-		case '2': printf("Test 2"); //Regelwerk(void);
-			system("pause"); bFalscheingabe = FALSE;
+		case '3':
+			iReturnValue = HAUPTMENUE_LISTE;
+			bFalscheingabe = FALSE;
 			break;
 
-		case '3': printf("Test 3"); //Bestenliste(void);
-			system("pause"); bFalscheingabe = FALSE;
+		case '4': 
+			iReturnValue = HAUPTMENUE_LOGOUT;
+			bFalscheingabe = FALSE;
 			break;
 
-		case '4': printf("Test 4"); //return HAUPTMENUE_LOGOUT;
-			system("pause"); bFalscheingabe = FALSE;
-			break;
-
-		case 'x': printf("Test X");//HAUPTMENUE_END
-			system("pause"); bFalscheingabe = FALSE;
+		case 'x':
+			iReturnValue = HAUPTMENUE_END;
+			bFalscheingabe = FALSE;
 			break;
 		default: bFalscheingabe = TRUE;
 		}
 	} while (bFalscheingabe == TRUE);
+	return iReturnValue;
 }
 
 int StartMenue() {
@@ -289,7 +300,7 @@ int StartMenue() {
 	else if (cAuswahl == '2') {
 		return STARTMENUE_REGISTER;
 	}
-	else if (cAuswahl == 'x') {
+	else {
 		return STARTMENUE_END;
 	}
 }
@@ -382,5 +393,5 @@ void printRegistrierungMenue3(void) {
 }
 
 void Bestenliste() {
-	liesBestenlisteneintraege(SCHWER);
+	/*liesBestenlisteneintraege(SCHWER);*/
 }

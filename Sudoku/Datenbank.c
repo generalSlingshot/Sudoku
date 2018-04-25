@@ -1,21 +1,20 @@
 #include "Sudoku.h"
 
+
 Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad);
 Nutzer liesLogindaten(char* sNutzername);
-char** liesSudoku(int id); //TODO
+Koordinate* liesSudoku(int id); //TODO
 void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement);
 
-Koordinate** liesSudoku(int id) {
+Koordinate* liesSudoku(int id) {
 	char* sql;
 	sqlite3* db_handle;
 	sqlite3_stmt* statement;
 	char* zErrMessage;
-	int i;
 	int iSpalte;
 	int iReihe;
 	int iReturncode;
 	Koordinate koordinaten[SUDOKU_SPALTE][SUDOKU_REIHE];
-	Koordinate koordinate;
 
 
 	// SQL
@@ -35,11 +34,11 @@ Koordinate** liesSudoku(int id) {
 		exit(-1); // TODO check
 	}
 
-	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, zErrMessage);
+	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, &zErrMessage);
 
 	// Koordinatenarray füllen
-	int iReihe = 0;
-	int iSpalte = 0;
+	iReihe = 0;
+	iSpalte = 0;
 
 	while (sqlite3_step(statement) == SQLITE_ROW) {
 		fuelleKoordinate(koordinaten[iReihe, iSpalte], statement);
@@ -49,12 +48,10 @@ Koordinate** liesSudoku(int id) {
 		else if (iSpalte < SUDOKU_SPALTE) {
 			iSpalte++;
 			iReihe = 0;
-		} else {
-			strcat(zErrMessage, "Fehler ");
 		}
 	}
 
-	return koordinaten;
+	return &koordinaten[0][0];
 
 }
 
@@ -99,7 +96,7 @@ Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad) {
 		exit(-1); // TODO check
 	}
 
-	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, zErrMessage);
+	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, &zErrMessage);
 
 	while (sqlite3_step(statement) == SQLITE_ROW) {
 		iSpalte = 0;
@@ -110,7 +107,7 @@ Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad) {
 		strcpy(eintrag.sSpielzeit, sqlite3_column_text(statement, iSpalte++));
 
 		// Schwierigkeit
-		strcpy(eintrag.iSchwierigkeit, sqlite3_column_int(statement, iSpalte++));
+		eintrag.iSchwierigkeit =sqlite3_column_int(statement, iSpalte++);
 
 		eintraege[iSpalte] = eintrag;
 	}
@@ -138,7 +135,7 @@ Nutzer liesLogindaten(char* sNutzername) {
 		exit(-1);
 	}
 
-	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, NULL);
+	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, &zErrMessage);
 
 
 	if (sqlite3_step(statement) != SQLITE_ROW) {

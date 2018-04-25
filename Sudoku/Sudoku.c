@@ -13,6 +13,7 @@ Das Programm erwartet beim Aufruf keine Argumente
 ========================================================================
 */
 
+
 #include "Sudoku.h"
 
 /*
@@ -22,7 +23,10 @@ Prototypen
 */
 void Abmelden(void);
 int** InitSudoku(int schwierigkeitsgrad);
+void fullscreen(void);
 
+
+char sNutzernameAngemeldet[NAME_MAX] = "";
 
 /*
 ========================================================================
@@ -30,6 +34,7 @@ Funktion main()
 ========================================================================
 */
 int main(void) {
+	fullscreen();
 	/*int iRueckgabeStart = -1;
 	int iRueckgabeHauptMenue = -1;
 	int iSchwierigkeitsgrad = -1;
@@ -62,9 +67,14 @@ int main(void) {
 }
 
 void Abmelden() {
-	if (sNutzernameAngemeldet != NULL) {
-		sNutzernameAngemeldet = NULL;
-	}
+}
+
+void fullscreen()
+{
+	keybd_event(VK_MENU, 0x38, 0, 0);
+	keybd_event(VK_RETURN, 0x1c, 0, 0);
+	keybd_event(VK_RETURN, 0x1c, KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_MENU, 0x38, KEYEVENTF_KEYUP, 0);
 }
 
 

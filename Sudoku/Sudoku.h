@@ -1,3 +1,8 @@
+#if  !defined (VAR) 
+#define VAR
+
+#define _CRT_SECURE_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_WARNINGS 1
 
 /*
 ========================================================================
@@ -7,14 +12,14 @@ Include Dateien
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <Windows.h>
 #include "sqlite3.h"
-
+#include "Oberflaeche.h"
 /*
 ========================================================================
 Defines
 ========================================================================
 */
-#define _CRT_SECURE_NO_DEPRECATE 1
 #define LEICHT 1
 #define MITTEL 2
 #define SCHWER 3
@@ -51,13 +56,6 @@ Defines
 
 #define DATABASE_FILE "sudoku.sqlite3"
 
-/*
-========================================================================
-Prototypen
-========================================================================
-*/
-Nutzer liesLogindaten(char* sNutzername);
-
 
 /*
 ========================================================================
@@ -89,6 +87,13 @@ typedef struct Koordinate {
 	int iZiffer;
 } Koordinate;
 
-extern char* sNutzernameAngemeldet = NULL;
+/*
+========================================================================
+Prototypen
+========================================================================
+*/
+Nutzer liesLogindaten(char* sNutzername);
 
+extern char sNutzernameAngemeldet[NAME_MAX];
 
+#endif
