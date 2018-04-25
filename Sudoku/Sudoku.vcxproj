@@ -121,6 +121,7 @@
     <ClCompile Include="Sudoku.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Oberflaeche.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="sqlite3ext.h" />
     <ClInclude Include="Sudoku.h" />

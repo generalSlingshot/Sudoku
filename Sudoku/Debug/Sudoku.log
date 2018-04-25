@@ -1,12 +1,7 @@
-﻿  Sudoku.c
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(26): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(243): warning C4133: 'function': incompatible types - from 'void (__cdecl *)(void *,int,char **,char **)' to 'int (__cdecl *)(void *,int,char **,char **)'
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(253): warning C4101: 'iSchwierigkeit': unreferenced local variable
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(250): warning C4101: 'sSpielzeit': unreferenced local variable
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(249): warning C4101: 'sNutzername': unreferenced local variable
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(274): warning C4101: 'zErrMessage': unreferenced local variable
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(245): warning C4172: returning address of local variable or temporary: uebergabe
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(517): warning C4715: 'StartMenue': not all control paths return a value
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(479): warning C4716: 'HauptmenueAufruf': must return a value
-c:\users\tomdarshan\source\repos\sudoku\sudoku\sudoku.c(564): warning C4715: 'SchwierigkeitMenue': not all control paths return a value
+﻿  Datenbank.c
+  Oberflaeche.c
+  Sudoku.c
+  Generating Code...
+c:\users\tomdarshan\source\repos\sudoku\sudoku\oberflaeche.c(353): warning C4715: 'SchwierigkeitMenue': not all control paths return a value
+c:\users\tomdarshan\source\repos\sudoku\sudoku\datenbank.c(114): warning C4715: 'liesBestenlistendaten': not all control paths return a value
   Sudoku.vcxproj -> C:\Users\tomdarshan\source\repos\Sudoku\Debug\Sudoku.exe
