@@ -15,6 +15,7 @@ Include Dateien
 #include <Windows.h>
 #include "sqlite3.h"
 #include "Oberflaeche.h"
+
 /*
 ========================================================================
 Defines
@@ -44,6 +45,8 @@ Defines
 #define NAME_MIN 5
 #define PASSWORT_MAX 20
 #define PASSWORT_MIN 5
+
+#define SQL_LEER 0
 
 #define TRUE 1
 #define FALSE 0
@@ -87,12 +90,10 @@ typedef struct Koordinate {
 	int iZiffer;
 } Koordinate;
 
-/*
-========================================================================
-Prototypen
-========================================================================
-*/
-Nutzer liesLogindaten(char* sNutzername);
+typedef struct LoginReturn {
+	Nutzer benutzer;
+	int iFehlercode;
+} LoginReturn;
 
 extern char sNutzernameAngemeldet[NAME_MAX];
 

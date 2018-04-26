@@ -215,8 +215,8 @@ void RegelwerkPrint(void) {
 }
 
 void Hauptmenueprint(void) {
-	system("cls");
 	char USERNAME[] = "User";
+	system("cls");
 	// Ueberschrift
 	printf("\n\n  H A U P T M E N U E\n");
 	printf("  - - - - - - - - - -\n\n");
