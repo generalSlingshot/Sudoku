@@ -2,7 +2,7 @@
 
 
 Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad);
-Nutzer liesLogindaten(char* sNutzername);
+Nutzer* liesLogindaten(char* sNutzername);
 Koordinate* liesSudoku(int id); //TODO
 void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement);
 
@@ -113,7 +113,8 @@ Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad) {
 	}
 }
 
-Nutzer liesLogindaten(char* sNutzername) {
+Nutzer* liesLogindaten(char* sNutzername) {
+	Nutzer* ptBenutzer = NULL;
 	Nutzer benutzer;
 	char* sql;
 	sqlite3* db_handle;
@@ -121,8 +122,6 @@ Nutzer liesLogindaten(char* sNutzername) {
 	char *zErrMessage;
 	int iSpalte;
 	int iReturncode;
-	UebergabeLeseBestenliste uebergabe;
-	uebergabe.curVal = 0;
 
 	sql = sqlite3_mprintf(
 		"SELECT Nutzername, Vorname, Nachname, Passwort FROM Benutzer "
@@ -138,20 +137,18 @@ Nutzer liesLogindaten(char* sNutzername) {
 	iReturncode = sqlite3_prepare_v2(db_handle, sql, strlen(sql), &statement, &zErrMessage);
 
 
-	if (sqlite3_step(statement) != SQLITE_ROW) {
-		printf("FUCKFUCKFUCK");
-		// Fehler
+	if (sqlite3_step(statement) == SQLITE_ROW) {
+		iSpalte = 0;
+		strcpy(benutzer.sNutzername, sqlite3_column_text(statement, iSpalte++));
+		strcpy(benutzer.sVorname, sqlite3_column_text(statement, iSpalte++));
+		strcpy(benutzer.sNachname, sqlite3_column_text(statement, iSpalte++));
+		strcpy(benutzer.sPasswort, sqlite3_column_text(statement, iSpalte++));
+		sqlite3_close(db_handle);
+		ptBenutzer = &benutzer;
 	}
-
-	iSpalte = 0;
-	strcpy(benutzer.sNutzername, sqlite3_column_text(statement, iSpalte++));
-	strcpy(benutzer.sVorname, sqlite3_column_text(statement, iSpalte++));
-	strcpy(benutzer.sNachname, sqlite3_column_text(statement, iSpalte++));
-	strcpy(benutzer.sPasswort, sqlite3_column_text(statement, iSpalte++));
-	sqlite3_close(db_handle);
 
 	sqlite3_free(sql);
 	sqlite3_finalize(statement);
 
-	return benutzer;
+	return ptBenutzer;
 }

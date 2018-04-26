@@ -1,5 +1,6 @@
 #include "Sudoku.h"
 #include "Oberflaeche.h"
+#include "Datenbank.h"
 
 int StartMenue(void); // Chung
 void RegistrierungMenue(void); // Henning
@@ -14,6 +15,8 @@ void printRegistrierungMenue3(void);
 void RegelwerkPrint(void);
 void printSchwierigkeitsAuswahl(void);
 void printStartMenue(void);
+void printAnmeldung1(void);
+void printAnmeldung2(void);
 
 void RegistrierungMenue(void) {
 	char sEingabe[65],
@@ -92,62 +95,77 @@ void RegistrierungMenue(void) {
 }
 
 void LoginMenue(void) {
-	int bFalscheingabe = FALSE;
-	char cUsernameEingabe[NAME_MAX];
-	char cPasswortEingabe[PASSWORT_MAX];
 	int iArrayLength;
-	int Passcorrect;
-	Nutzer benutzer;
+	int bPasskorrekt;
+	int bFalscheingabe = FALSE;
+	char sNutzernameEingabe[NAME_MAX];
+	char cPasswortEingabe[PASSWORT_MAX];
+	Nutzer* ptBenutzer;
 
+	// Bildschirmausgabe von Loginstart
 	do {
-
-		system("cls");
-		printf("\n\n  A N M E L D U N G\n");
-		printf("  = = = = = = = = =\n\n");
-		printf("  Bitte geben Sie den Nutzernamen und"
-			" das Passwort Ihres registrierten Kontos ein.\n\n");
-		printf("  Bitte Nutzernamen eingeben: ");
-		scanf("%s", cUsernameEingabe);
-		iArrayLength = sizeof(cUsernameEingabe) / sizeof(cUsernameEingabe[0]);
-
-	} while (iArrayLength >= NAME_MAX && iArrayLength <= NAME_MIN);
-
-	benutzer = liesLogindaten(cUsernameEingabe);
-	do {
-		system("cls");
-		printf("\n\n  A N M E L D U N G\n");
-		printf("  = = = = = = = = =\n\n");
-		printf("  Bitte geben Sie den Nutzernamen und"
-			" das Passwort Ihres registrierten Kontos ein.\n\n");
-		printf("  Bitte Nutzernamen eingeben: %s\n\n", &cUsernameEingabe);
+		printAnmeldung1();
 		if (bFalscheingabe == TRUE) {
-			printf("  Bitte versuchen sie es erneut!\n");
+			printf("  Es existiert kein Nutzer mit dem Nutzernamen '%s'.\n",
+				sNutzernameEingabe);
+		}
+		bFalscheingabe = TRUE;
+		printf("  Bitte Nutzernamen eingeben: ");
+		scanf("%s", &sNutzernameEingabe);
+
+		// Datenbank lesen
+		ptBenutzer = liesLogindaten(sNutzernameEingabe);
+
+		// Schleifenexit, wenn Nutzer korrekt
+		if (ptBenutzer != NULL) {
 			bFalscheingabe = FALSE;
 		}
+	} while (bFalscheingabe == TRUE);
+
+	bFalscheingabe = FALSE;
+
+	// Bildschirmausgabe vom 2. Loginbildschirm
+	do {
+		printAnmeldung2();
+
+		if (bFalscheingabe == TRUE) {
+			printf("  Ihre Passwörter stimmen nicht beide mit dem registrierten Passwort überein!\n");
+		}
+		bFalscheingabe = FALSE;
+
+		// 2. Passworteingabe vergleichen
 		printf("  Bitte Passwort eingeben: ");
 		scanf("%s", cPasswortEingabe);
-		Passcorrect = strcmp(cPasswortEingabe, benutzer.sPasswort);
-		if (Passcorrect == 1) {
+		bPasskorrekt = strcmp(cPasswortEingabe, ptBenutzer->sPasswort);
+		if (bPasskorrekt == TRUE) {
+			bFalscheingabe = FALSE;
+		}
+		else {
 			bFalscheingabe = TRUE;
 		}
+	} while (bPasskorrekt == TRUE);
 
-	} while (Passcorrect == 1);
+	// Angemeldeten Nutzer setzen
+	strcpy(&sNutzernameAngemeldet, sNutzernameEingabe);
+}
 
-	strcpy(sNutzernameAngemeldet, cUsernameEingabe);
+void printAnmeldung2(void) {
 	system("cls");
-
-	printf("\n\n  Sie werden eingeloggt und zum Hauptmenue weitergeleitet...\n\n");
-	printf("  ");
-	system("pause");
+	printf("\n\n  A N M E L D U N G\n");
+	printf("  = = = = = = = = =\n\n");
+	printf("  Bitte geben Sie den Nutzernamen und"
+		" das Passwort Ihres registrierten Kontos ein.\n\n");
 }
 
-int HauptMenue(void)
-{
-	return 0;
-}
+void printAnmeldung1(void) {
+	system("cls");
+	printf("\n\n  A N M E L D U N G\n");
+	printf("  = = = = = = = = =\n\n");
+	printf("  Bitte geben Sie den Nutzernamen und"
+		" das Passwort Ihres registrierten Kontos ein.\n\n");
+} //TODO
 
-
-void RegelwerkAufruf(void) {
+void Regelwerk(void) {
 	char bFalscheingabe = FALSE;
 	char cUserEingabe;
 
@@ -216,7 +234,7 @@ void Hauptmenueprint(void) {
 		"  x: Beenden\n\n");
 
 }
-int HauptmenueAufruf(void) {
+int HauptMenue(void) {
 
 	char cUserEingabe;
 	int bFalscheingabe = FALSE;
@@ -350,6 +368,7 @@ int SchwierigkeitMenue(void) {
 	else if (cAuswahl == '3') {
 		return SCHWER;
 	}
+	else return NICHT_GESETZT;
 }
 
 void printSchwierigkeitsAuswahl(void) {
