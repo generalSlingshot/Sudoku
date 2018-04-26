@@ -1,7 +1,0 @@
-﻿  Datenbank.c
-  Oberflaeche.c
-  Sudoku.c
-  Generating Code...
-c:\users\tomdarshan\source\repos\sudoku\sudoku\oberflaeche.c(353): warning C4715: 'SchwierigkeitMenue': not all control paths return a value
-c:\users\tomdarshan\source\repos\sudoku\sudoku\datenbank.c(114): warning C4715: 'liesBestenlistendaten': not all control paths return a value
-  Sudoku.vcxproj -> C:\Users\tomdarshan\source\repos\Sudoku\Debug\Sudoku.exe
