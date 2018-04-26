@@ -13,7 +13,6 @@ Das Programm erwartet beim Aufruf keine Argumente
 ========================================================================
 */
 
-
 #include "Sudoku.h"
 
 /*
@@ -22,7 +21,6 @@ Prototypen
 ========================================================================
 */
 void Abmelden(void);
-int** InitSudoku(int schwierigkeitsgrad);
 void fullscreen(void);
 
 
@@ -35,34 +33,33 @@ Funktion main()
 */
 int main(void) {
 	fullscreen();
-	/*int iRueckgabeStart = -1;
-	int iRueckgabeHauptMenue = -1;
-	int iSchwierigkeitsgrad = -1;
+	int iRueckgabeStart = NICHT_GESETZT;
+	int iRueckgabeHauptMenue = NICHT_GESETZT;
+	int iSchwierigkeitsgrad = NICHT_GESETZT;
 	do {
-	iRueckgabeStart = StartMenue();
-	if (iRueckgabeStart == STARTMENUE_LOGIN) {
-	LoginMenue();
-	}
-	else if (iRueckgabeStart == STARTMENUE_REGISTER) {
-	RegistrierungMenue();
-	}
-	else if (iRueckgabeStart != STARTMENUE_END) {
-	do {
-	iRueckgabeHauptMenue = HauptMenue();
-	if (iRueckgabeHauptMenue == HAUPTMENUE_SPIEL) {
-	iSchwierigkeitsgrad = SchwierigkeitMenue();
-	SudokuSpiel(iSchwierigkeitsgrad);
-	}
-	else if (iRueckgabeHauptMenue == HAUPTMENUE_REGEL) {
-	Regelwerk();
-	}
-	else if (iRueckgabeHauptMenue == HAUPTMENUE_LISTE) {
-	Bestenliste();
-	}
-	} while (iRueckgabeHauptMenue != HAUPTMENUE_LOGOUT);
-	}
-	} while (iRueckgabeStart != STARTMENUE_END);*/
-	LoginMenue();
+		iRueckgabeStart = StartMenue();
+		if (iRueckgabeStart == STARTMENUE_LOGIN) {
+			LoginMenue();
+		}
+		else if (iRueckgabeStart == STARTMENUE_REGISTER) {
+			RegistrierungMenue();
+		}
+		if (iRueckgabeStart != STARTMENUE_END) {
+			do {
+				iRueckgabeHauptMenue = HauptMenue();
+				if (iRueckgabeHauptMenue == HAUPTMENUE_SPIEL) {
+					iSchwierigkeitsgrad = SchwierigkeitMenue();
+					//SudokuSpiel(iSchwierigkeitsgrad);
+				}
+				else if (iRueckgabeHauptMenue == HAUPTMENUE_REGEL) {
+					Regelwerk();
+				}
+				else if (iRueckgabeHauptMenue == HAUPTMENUE_LISTE) {
+					Bestenliste();
+				}
+			} while (iRueckgabeHauptMenue != HAUPTMENUE_LOGOUT);
+		}
+	} while (iRueckgabeStart != STARTMENUE_END);
 	return 0;
 }
 
