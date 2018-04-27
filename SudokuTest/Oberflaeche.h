@@ -1,0 +1,30 @@
+// Alle Prototypen fuer Sudoku Funktionen
+int StartMenue(void);
+int RegistrierungMenue(void);
+int LoginMenue(void);
+int HauptMenue(void);
+void Regelwerk(void);
+void Bestenliste(int SchwierigkeitsAuswahl);
+int SudokuSpiel(int schwierigkeitsgrad);
+void printRegistrierungMenue1(void);
+void printRegistrierungMenue2(void);
+void printRegistrierungMenue3(void);
+void RegelwerkPrint(void);
+void printSchwierigkeitsAuswahl(void);
+void printStartMenue(void);
+int SchwierigkeitMenue(void);
+void printRegisterWelcome(void);
+void printRegistrierungMenueNutzername(void);
+void printRegistrierungMenueNachname(void);
+void printRegistrierungMenueVorname(void);
+void printRegistrierungsMenueBestaetigung
+	(char NutzerName,char NachName, char VorName);
+void printRegistrierungsMenuePasswort(void);
+void printRegistrierungsMenuePasswortPruef(void);
+void printRegisterComplete(void);
+void printAnmeldung1(void);
+int Pruef_isalnum(char *Teststring);
+int Pruef_isalpha(char *Teststring);
+void Anmelden(char *Username);
+void Abmelden(char *Username);
+void fullscreen(void);
