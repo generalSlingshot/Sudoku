@@ -1,4 +1,5 @@
-#if  !defined (VAR) 
+
+#if !defined (VAR)
 #define VAR
 
 #define _CRT_SECURE_NO_DEPRECATE 1
@@ -13,6 +14,7 @@ Include Dateien
 #include <stdlib.h>
 #include <string.h>
 #include <Windows.h>
+#include <time.h>
 #include "sqlite3.h"
 #include "Oberflaeche.h"
 
@@ -21,12 +23,14 @@ Include Dateien
 Defines
 ========================================================================
 */
+
 #define LEICHT 1
 #define MITTEL 2
 #define SCHWER 3
 
 #define SUDOKU_WIN 1
 #define SUDOKU_LOSE 0
+#define SUDOKU_NONE 2
 
 #define SUDOKU_REIHE 9
 #define SUDOKU_SPALTE 9
@@ -40,9 +44,6 @@ Defines
 #define STARTMENUE_LOGIN 1
 #define STARTMENUE_REGISTER 2
 #define STARTMENUE_END 0
-
-#define REGISTER_BACK 5
-#define SUCCESS 6
 
 #define NAME_MAX 20
 #define NAME_MIN 5
@@ -61,6 +62,8 @@ Defines
 #define BESTENLISTE_TOPSCORE_ANZAHL 10
 
 #define DATABASE_FILE "sudoku.sqlite3"
+
+#define DATENBANK_FEHLER 3
 
 
 /*
@@ -99,5 +102,6 @@ typedef struct LoginReturn {
 } LoginReturn;
 
 extern char sNutzernameAngemeldet[NAME_MAX];
+extern Koordinate sudoku[SUDOKU_REIHE][SUDOKU_SPALTE];
 
 #endif
