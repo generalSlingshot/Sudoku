@@ -13,6 +13,7 @@ Include Dateien
 #include <stdlib.h>
 #include <string.h>
 #include <Windows.h>
+#include <ctype.h>
 #include "sqlite3.h"
 #include "Oberflaeche.h"
 
@@ -41,6 +42,9 @@ Defines
 #define STARTMENUE_REGISTER 2
 #define STARTMENUE_END 0
 
+#define REGISTER_BACK 5
+#define SUCCESS 6
+
 #define NAME_MAX 20
 #define NAME_MIN 5
 #define PASSWORT_MAX 20
@@ -56,6 +60,8 @@ Defines
 
 #define BESTENLISTE_ANZAHL 3
 #define BESTENLISTE_TOPSCORE_ANZAHL 10
+
+#define DATENBANK_OK 10
 
 #define DATABASE_FILE "sudoku.sqlite3"
 

@@ -20,9 +20,6 @@ Das Programm erwartet beim Aufruf keine Argumente
 Prototypen
 ========================================================================
 */
-void Abmelden(void);
-void fullscreen(void);
-
 
 char sNutzernameAngemeldet[NAME_MAX] = "";
 
@@ -32,18 +29,22 @@ Funktion main()
 ========================================================================
 */
 int main(void) {
-	fullscreen();
 	int iRueckgabeStart = NICHT_GESETZT;
+	int iRueckgabeRegister = NICHT_GESETZT;
 	int iRueckgabeHauptMenue = NICHT_GESETZT;
 	int iSchwierigkeitsgrad = NICHT_GESETZT;
+	system("mode con: cols=500 lines=500");
+	fullscreen();
 	do {
-		iRueckgabeStart = StartMenue();
-		if (iRueckgabeStart == STARTMENUE_LOGIN) {
-			LoginMenue();
-		}
-		else if (iRueckgabeStart == STARTMENUE_REGISTER) {
-			RegistrierungMenue();
-		}
+		do {
+			iRueckgabeStart = StartMenue();
+			if (iRueckgabeStart == STARTMENUE_LOGIN) {
+				iRueckgabeRegister = LoginMenue();
+			}
+			else if (iRueckgabeStart == STARTMENUE_REGISTER) {
+				iRueckgabeRegister = RegistrierungMenue();
+			}
+		}while(iRueckgabeRegister != SUCCESS && iRueckgabeStart != STARTMENUE_END );
 		if (iRueckgabeStart != STARTMENUE_END) {
 			do {
 				iRueckgabeHauptMenue = HauptMenue();
@@ -55,7 +56,8 @@ int main(void) {
 					Regelwerk();
 				}
 				else if (iRueckgabeHauptMenue == HAUPTMENUE_LISTE) {
-					Bestenliste();
+					iSchwierigkeitsgrad = SchwierigkeitMenue();
+					Bestenliste(iSchwierigkeitsgrad);
 				}
 			} while (iRueckgabeHauptMenue != HAUPTMENUE_LOGOUT);
 		}
@@ -63,10 +65,7 @@ int main(void) {
 	return 0;
 }
 
-void Abmelden() {
-}
-
-void fullscreen()
+void fullscreen(void)
 {
 	keybd_event(VK_MENU, 0x38, 0, 0);
 	keybd_event(VK_RETURN, 0x1c, 0, 0);
