@@ -2,7 +2,6 @@
 #include "Datenbank.h"
 
 
-Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad);
 Nutzer* liesLogindaten(char* sNutzername);
 Koordinate* liesSudoku(int id); //TODO
 void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement);
@@ -59,8 +58,9 @@ Koordinate* liesSudoku(int id) {
 int registriereNutzer(Nutzer* ptBenutzer) {
 	sqlite3* db_handle;
 	int iReturncode;
+	char* zErrMessage;
 	char* sql = sqlite3_mprintf(
-		"INSERT INTO Nutzer (Vorname, Nachname, Nutzername, Passwort) "
+		"INSERT INTO Benutzer (Vorname, Nachname, Nutzername, Passwort) "
 		"VALUES ('%s', '%s', '%s', '%s')",
 		ptBenutzer->sVorname,
 		ptBenutzer->sNachname,
@@ -73,14 +73,18 @@ int registriereNutzer(Nutzer* ptBenutzer) {
 	// Bei fehlern sofort schliessen
 	if (iReturncode != SQLITE_OK) {
 		sqlite3_close(db_handle);
-		exit(-1); // TODO check
-	}
-
-	iReturncode = sqlite3_exec(db_handle, sql, NULL, NULL, NULL);
-
-	if (iReturncode != SQLITE_OK) {
 		return DATENBANK_FEHLER;
 	}
+
+	iReturncode = sqlite3_exec(db_handle, sql, NULL, NULL, &zErrMessage);
+
+
+	if (iReturncode != SQLITE_OK) {
+		sqlite3_close(db_handle);
+		return DATENBANK_FEHLER;
+	}
+
+	return DATENBANK_OK;
 }
 
 void fuelleKoordinate(Koordinate* koordinate, sqlite3_stmt* statement) {
@@ -113,7 +117,7 @@ Bestenlisteneintrag* liesBestenlistendaten(int iSchwierigkeitsgrad) {
 		"LEFTJOIN Nutzer AS C "
 		"ON A.FK_Nutzer = C.ID"
 		"ORDER BY B.Programmwert, A.Spielzeit "
-		"WHERE B.Programmwert = %i ", iSchwierigkeitsgrad);
+		"WHERE B.Programmwert = %i LIMIT 10", iSchwierigkeitsgrad);
 
 	// Db öffnen
 	iReturncode = sqlite3_open(DATABASE_FILE, &db_handle);
