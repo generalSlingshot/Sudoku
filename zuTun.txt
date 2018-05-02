@@ -1,0 +1,13 @@
+- Längenvalidierung Strings Registrierung 5->3 Stellen min bei Vor/Nachname
+- Registrierungsmenü 'x' klappt nicht
+- Bestenliste print + DB zusammenfügen
+- Bestenliste implementieren in Hauptmenü + nach Spielabschluss
+- Kommentare überall
+- checken Prototypen in Headerdatei vs C-Datei
+- checkstyle
+- Sudokuspiel in Main copy&paste Bitbucket
+- Codestandards (search and destroy: "exit", "mitten returns", ) (add + implement : datenbanksession/verbindung schliessen)
+- Hilfsfunktion
+- Spielregeln in Sudoku
+- überprüfen, ob funktioniert
+- 
